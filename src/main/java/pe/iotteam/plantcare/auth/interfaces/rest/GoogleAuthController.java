@@ -33,10 +33,10 @@ public class GoogleAuthController {
         this.userRepository = userRepository;
     }
 
-    @PostMapping("/signin")
+    @PostMapping("/sign-in")
     @Operation(
-            summary = "Iniciar sesión con Google",
-            description = "Autentica mediante OAuth de Google."
+            summary = "Sign in with Google",
+            description = "Authenticate using Google OAuth."
     )
     public ResponseEntity<?> signInWithGoogle(@Valid @RequestBody GoogleSignInResource resource) {
         try {
