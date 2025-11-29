@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pe.iotteam.plantcare.community.domain.model.aggregates.CommunityMember;
 import pe.iotteam.plantcare.community.domain.model.entities.Comment;
 import pe.iotteam.plantcare.community.domain.model.entities.Post;
+import pe.iotteam.plantcare.community.domain.model.entities.PostReaction;
 import pe.iotteam.plantcare.community.infrastructure.persistence.jpa.repositories.*;
 
 import java.util.UUID;
@@ -15,15 +16,17 @@ public class CommunityContentCommandService {
     private final CommunityMemberRepository memberRepository;
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
+    private final PostReactionRepository reactionRepository;
 
     public CommunityContentCommandService(
             CommunityMemberRepository memberRepository,
             PostRepository postRepository,
-            CommentRepository commentRepository
-    ) {
+            CommentRepository commentRepository,
+            PostReactionRepository reactionRepository) {
         this.memberRepository = memberRepository;
         this.postRepository = postRepository;
         this.commentRepository = commentRepository;
+        this.reactionRepository = reactionRepository;
     }
 
     @Transactional
@@ -56,5 +59,33 @@ public class CommunityContentCommandService {
             throw new RuntimeException("No autorizado para eliminar este post");
 
         postRepository.delete(post);
+    }
+
+    @Transactional
+    public boolean toggleLike(UUID userId, Long postId) {
+        CommunityMember user = memberRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Miembro no encontrado"));
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post no encontrado"));
+
+        if (reactionRepository.existsByPostAndUserId(post, userId)) {
+            reactionRepository.deleteByPostAndUserId(post, userId);
+            return false; // Like removed
+        } else {
+            reactionRepository.save(new PostReaction(post, user));
+            return true; // Like added
+        }
+    }
+
+    @Transactional
+    public void deleteOwnComment(UUID userId, UUID commentId) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new RuntimeException("Comentario no encontrado"));
+
+        if (!comment.getAuthor().getId().equals(userId)) {
+            throw new RuntimeException("No autorizado para eliminar este comentario");
+        }
+
+        commentRepository.delete(comment);
     }
 }
