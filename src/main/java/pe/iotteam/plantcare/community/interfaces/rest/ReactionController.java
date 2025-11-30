@@ -12,7 +12,7 @@ import pe.iotteam.plantcare.community.infrastructure.persistence.jpa.repositorie
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/community/reactions")
+@RequestMapping("/api/v1/community/reactions")
 @Tag(name = "Community Reactions", description = "Endpoints para gestionar las reacciones (likes) a las publicaciones.")
 public class ReactionController {
 
