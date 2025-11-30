@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/community/comments")
+@RequestMapping("/api/v1/community/comments")
 @Tag(name = "Community Comments", description = "Endpoints para gestionar comentarios realizados por los usuarios dentro de la comunidad.")
 public class CommentController {
 

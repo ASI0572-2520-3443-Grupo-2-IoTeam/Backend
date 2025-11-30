@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/community/members")
+@RequestMapping("/api/v1/community/members")
 @Tag(name = "Community Members", description = "Gestión de miembros dentro de la comunidad, incluyendo registro y obtención del listado de miembros.")
 public class CommunityMemberController {
 
