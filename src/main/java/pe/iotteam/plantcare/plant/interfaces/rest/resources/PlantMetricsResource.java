@@ -6,10 +6,10 @@ public record PlantMetricsResource(
         Long id,
         Long plantId,
         String deviceId,
-        Integer temperature,
-        Integer humidity,
-        Integer light,
-        Integer soilHumidity,
-        LocalDateTime createdAt
+        Double airTemperatureC,
+        Double airHumidityPct,
+        Integer lightIntensityLux,
+        Integer soilMoisturePct,
+        LocalDateTime timestamp
 ) {
 }
