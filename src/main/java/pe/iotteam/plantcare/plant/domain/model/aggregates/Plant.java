@@ -100,32 +100,66 @@ public class Plant {
         // Base watering interval: 3 days
         long baseHours = 72;
 
-        // Adjust based on temperature (higher temp = more frequent watering)
-        if (metrics.getTemperature() > 25) {
-            baseHours -= 12; // Subtract 12 hours
-        } else if (metrics.getTemperature() < 18) {
-            baseHours += 12; // Add 12 hours
+        if (metrics == null) {
+            return this.lastWatered.plusHours(baseHours);
         }
 
-        // Adjust based on humidity (lower humidity = more frequent watering)
-        if (metrics.getHumidity() < 40) {
-            baseHours -= 8; // Subtract 8 hours
-        } else if (metrics.getHumidity() > 60) {
-            baseHours += 8; // Add 8 hours
+        Integer temp = metrics.getTemperature();
+        Integer soilHumidity = metrics.getSoilHumidity();
+        Double airHumidity = metrics.getHumidity() != null ? metrics.getHumidity().doubleValue() : null;
+
+        // Adjust based on temperature (higher temp = more frequent watering)
+        if (temp != null) {
+            if (temp > 25) {
+                baseHours -= 12; // Subtract 12 hours
+            } else if (temp < 18) {
+                baseHours += 12; // Add 12 hours
+            }
         }
+
+        // Adjust based on soil humidity (lower soil moisture = more frequent watering)
+        if (soilHumidity != null) {
+            if (soilHumidity < 30) {
+                baseHours -= 8; // Subtract 8 hours
+            } else if (soilHumidity > 70) {
+                baseHours += 8; // Add 8 hours
+            }
+        } else if (airHumidity != null) {
+            // Fallback: if soil humidity not available, use air humidity as secondary signal
+            if (airHumidity < 40) {
+                baseHours -= 8;
+            } else if (airHumidity > 60) {
+                baseHours += 8;
+            }
+        }
+
+        // Ensure next watering is at least 12 hours from last watering and not negative
+        if (baseHours < 12) baseHours = 12;
 
         return this.lastWatered.plusHours(baseHours);
     }
 
     private boolean isCritical(PlantMetrics metrics) {
-        return metrics.getTemperature() < 10 || metrics.getTemperature() > 35 ||
-               metrics.getHumidity() < 30 || metrics.getHumidity() > 70 ||
-               metrics.getSoilHumidity() < 20 || metrics.getSoilHumidity() > 80;
+        if (metrics == null) return false;
+
+        Integer temp = metrics.getTemperature();
+        Integer humidity = metrics.getHumidity();
+        Integer soilHumidity = metrics.getSoilHumidity();
+
+        return (temp != null && (temp < 10 || temp > 35)) ||
+               (humidity != null && (humidity < 30 || humidity > 70)) ||
+               (soilHumidity != null && (soilHumidity < 20 || soilHumidity > 80));
     }
 
     private boolean isWarning(PlantMetrics metrics) {
-        return metrics.getTemperature() < 18 || metrics.getTemperature() > 26 ||
-               metrics.getHumidity() < 40 || metrics.getHumidity() > 60 ||
-               metrics.getSoilHumidity() < 30 || metrics.getSoilHumidity() > 70;
+        if (metrics == null) return false;
+
+        Integer temp = metrics.getTemperature();
+        Integer humidity = metrics.getHumidity();
+        Integer soilHumidity = metrics.getSoilHumidity();
+
+        return (temp != null && (temp < 18 || temp > 26)) ||
+               (humidity != null && (humidity < 40 || humidity > 60)) ||
+               (soilHumidity != null && (soilHumidity < 30 || soilHumidity > 70));
     }
 }

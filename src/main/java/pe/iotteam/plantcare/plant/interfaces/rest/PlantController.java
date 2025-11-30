@@ -101,11 +101,11 @@ public class PlantController {
                     // 2. Create a temporary PlantMetrics object
                     var liveMetric = new PlantMetrics(
                             new PlantId(plant.getId()),
-                            latestSensorData.getDeviceId(),
-                            latestSensorData.getTemperature(),
-                            latestSensorData.getHumidity() != null ? latestSensorData.getHumidity().intValue() : 0,
-                            latestSensorData.getLight(),
-                            latestSensorData.getSoilHumidity()
+                            latestSensorData.getDeviceId() != null ? latestSensorData.getDeviceId() : "unknown",
+                            latestSensorData.getTemperature() != null ? latestSensorData.getTemperature() : 20,
+                            latestSensorData.getHumidity() != null ? latestSensorData.getHumidity().intValue() : 50,
+                            latestSensorData.getLight() != null ? latestSensorData.getLight() : 500,
+                            latestSensorData.getSoilHumidity() != null ? latestSensorData.getSoilHumidity() : 50
                     );
 
                     // 3. Determine plant status from live metric
@@ -144,11 +144,11 @@ public class PlantController {
                 .map(plant -> {
                     var liveMetric = new PlantMetrics(
                             new PlantId(plant.getId()),
-                            latestSensorData.getDeviceId(),
-                            latestSensorData.getTemperature(),
-                            latestSensorData.getHumidity() != null ? latestSensorData.getHumidity().intValue() : 0,
-                            latestSensorData.getLight(),
-                            latestSensorData.getSoilHumidity()
+                            latestSensorData.getDeviceId() != null ? latestSensorData.getDeviceId() : "unknown",
+                            latestSensorData.getTemperature() != null ? latestSensorData.getTemperature() : 20,
+                            latestSensorData.getHumidity() != null ? latestSensorData.getHumidity().intValue() : 50,
+                            latestSensorData.getLight() != null ? latestSensorData.getLight() : 500,
+                            latestSensorData.getSoilHumidity() != null ? latestSensorData.getSoilHumidity() : 50
                     );
                     plant.determineStatusFrom(liveMetric);
                     plant.addMetric(liveMetric);

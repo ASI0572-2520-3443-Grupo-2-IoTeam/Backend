@@ -9,8 +9,8 @@ public class PlantMetricsResourceFromEntityAssembler {
                 metrics.getId(),
                 metrics.getPlantId().plantId(),
                 metrics.getDeviceId(),
-                metrics.getTemperature(),
-                metrics.getHumidity(),
+                metrics.getTemperature() != null ? metrics.getTemperature().doubleValue() : null,
+                metrics.getHumidity() != null ? metrics.getHumidity().doubleValue() : null,
                 metrics.getLight(),
                 metrics.getSoilHumidity(),
                 metrics.getCreatedAt()
