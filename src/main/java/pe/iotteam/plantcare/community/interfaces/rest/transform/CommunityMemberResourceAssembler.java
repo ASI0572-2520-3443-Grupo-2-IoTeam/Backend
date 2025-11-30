@@ -5,11 +5,11 @@ import pe.iotteam.plantcare.community.interfaces.rest.resources.CommunityMemberR
 
 public class CommunityMemberResourceAssembler {
 
-    public static CommunityMemberResource toResource(CommunityMember member) {
+    public static CommunityMemberResource toResource(CommunityMember member, String username) {
         return new CommunityMemberResource(
                 member.getId(),
+                username,
                 member.getRole().name(),
-                member.getJoinedAt()
-        );
+                member.getJoinedAt());
     }
 }

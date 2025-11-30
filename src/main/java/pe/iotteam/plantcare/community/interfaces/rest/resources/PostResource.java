@@ -4,10 +4,12 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 public record PostResource(
-        Long id,
-        String title,
-        String content,
-        String authorId,
-        LocalDateTime createdAt,
-        boolean highlighted
-) {}
+                Long id,
+                String title,
+                String content,
+                String species,
+                String tag,
+                String authorId,
+                LocalDateTime createdAt,
+                boolean highlighted) {
+}

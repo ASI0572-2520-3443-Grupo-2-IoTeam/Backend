@@ -4,7 +4,8 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 public record CommunityMemberResource(
-        UUID userId,
-        String role,
-        LocalDateTime joinedAt
-) {}
+                UUID userId,
+                String username,
+                String role,
+                LocalDateTime joinedAt) {
+}

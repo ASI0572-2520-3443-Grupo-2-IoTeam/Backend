@@ -5,12 +5,13 @@ import pe.iotteam.plantcare.community.interfaces.rest.resources.CommentResource;
 
 public class CommentResourceAssembler {
 
-    public static CommentResource toResource(Comment comment) {
+    public static CommentResource toResource(Comment comment, String username) {
         return new CommentResource(
                 comment.getId(),
-                comment.getPost().getId().toString(),
                 comment.getContent(),
-                comment.getCreatedAt()
-        );
+                comment.getCreatedAt(),
+                comment.getAuthor().getId(),
+                username,
+                comment.getPost().getId());
     }
 }

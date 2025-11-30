@@ -10,9 +10,10 @@ public class PostResourceAssembler {
                 post.getId(),
                 post.getTitle(),
                 post.getContent(),
+                post.getSpecies(),
+                post.getTag(),
                 post.getAuthor().getId().toString(),
                 post.getCreatedAt(),
-                post.isHighlighted()
-        );
+                post.isHighlighted());
     }
 }
