@@ -7,6 +7,7 @@ import pe.iotteam.plantcare.plant.domain.model.valueobjects.PlantStatus;
 import pe.iotteam.plantcare.plant.domain.model.valueobjects.UserId;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,8 +39,8 @@ public class Plant {
         this.status = PlantStatus.HEALTHY;
         this.metrics = new ArrayList<>();
         this.wateringLogs = new ArrayList<>();
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now(ZoneId.of("America/Lima"));
+        this.updatedAt = LocalDateTime.now(ZoneId.of("America/Lima"));
     }
 
     public Plant(Long id, UserId userId, String name, String type, String imgUrl,
@@ -56,8 +57,8 @@ public class Plant {
         this.status = status != null ? status : PlantStatus.HEALTHY;
         this.lastWatered = lastWatered;
         this.nextWatering = nextWatering;
-        this.createdAt = createdAt != null ? createdAt : LocalDateTime.now();
-        this.updatedAt = updatedAt != null ? updatedAt : LocalDateTime.now();
+        this.createdAt = createdAt != null ? createdAt : LocalDateTime.now(ZoneId.of("America/Lima"));
+        this.updatedAt = updatedAt != null ? updatedAt : LocalDateTime.now(ZoneId.of("America/Lima"));
         this.metrics = metrics != null ? metrics : new ArrayList<>();
         this.wateringLogs = wateringLogs != null ? wateringLogs : new ArrayList<>();
     }
@@ -68,7 +69,7 @@ public class Plant {
         this.imgUrl = command.imgUrl();
         this.bio = command.bio();
         this.location = command.location();
-        this.updatedAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now(ZoneId.of("America/Lima"));
     }
 
     public void addMetric(PlantMetrics metric) {
@@ -90,10 +91,10 @@ public class Plant {
      * @param latestMetrics The current sensor data, used to calculate the next watering time.
      */
     public void water(PlantMetrics latestMetrics) {
-        this.lastWatered = LocalDateTime.now();
+        this.lastWatered = LocalDateTime.now(ZoneId.of("America/Lima"));
         this.wateringLogs.add(new WateringLog(new PlantId(this.id)));
         this.nextWatering = calculateNextWatering(latestMetrics);
-        this.updatedAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now(ZoneId.of("America/Lima"));
     }
 
     private LocalDateTime calculateNextWatering(PlantMetrics metrics) {
