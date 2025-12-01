@@ -4,6 +4,7 @@ import lombok.Getter;
 import pe.iotteam.plantcare.plant.domain.model.valueobjects.PlantId;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Getter
 public class WateringLog {
@@ -16,7 +17,7 @@ public class WateringLog {
      */
     public WateringLog(PlantId plantId) {
         this.plantId = plantId;
-        this.wateredAt = LocalDateTime.now();
+        this.wateredAt = LocalDateTime.now(ZoneId.of("America/Lima"));
     }
 
     /**
