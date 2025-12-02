@@ -15,17 +15,17 @@ public record SensorDataResource(
         @JsonProperty("device_id")
         String deviceId,
         
-        @JsonProperty("temperature")
-        Integer temperature,
+        @JsonProperty("air_temperature_celsius")
+        Double airTemperatureCelsius,
         
-        @JsonProperty("humidity")
-        Integer humidity,
+        @JsonProperty("air_humidity_percent")
+        Double airHumidityPercent,
         
-        @JsonProperty("light")
-        Integer light,
+        @JsonProperty("luminosity_lux")
+        Integer luminosityLux,
         
-        @JsonProperty("soil_humidity")
-        Integer soilHumidity,
+        @JsonProperty("soil_moisture_percent")
+        Integer soilMoisturePercent,
         
         @JsonProperty("created_at")
         @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")

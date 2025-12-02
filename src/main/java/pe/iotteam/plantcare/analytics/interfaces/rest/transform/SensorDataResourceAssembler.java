@@ -18,10 +18,10 @@ public class SensorDataResourceAssembler {
         return new SensorDataResource(
                 record.getId() != null ? record.getId().value() : null,
                 record.getDeviceId(),
-                record.getTemperature(),
-                record.getHumidity(),
-                record.getLight(),
-                record.getSoilHumidity(),
+                record.getAirTemperatureCelsius(),
+                record.getAirHumidityPercent(),
+                record.getLuminosityLux(),
+                record.getSoilMoisturePercent(),
                 record.getCreatedAt()
         );
     }

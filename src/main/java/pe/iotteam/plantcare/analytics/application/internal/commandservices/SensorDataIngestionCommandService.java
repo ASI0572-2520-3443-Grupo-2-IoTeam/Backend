@@ -88,10 +88,10 @@ public class SensorDataIngestionCommandService {
                 // Convert DTO to domain model
                 SensorDataRecord record = new SensorDataRecord(
                         dto.getDeviceId(),
-                        dto.getTemperature(),
-                        dto.getHumidity(),
-                        dto.getLight(),
-                        dto.getSoilHumidity(),
+                        dto.getAirTemperatureCelsius(),
+                        dto.getAirHumidityPercent(),
+                        dto.getLuminosityLux(),
+                        dto.getSoilMoisturePercent(),
                         dto.getCreatedAt()
                 );
                 

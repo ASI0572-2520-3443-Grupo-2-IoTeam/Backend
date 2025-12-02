@@ -16,10 +16,10 @@ public class SensorDataMapper {
         return new SensorDataRecord(
                 new SensorDataId(entity.getId()),
                 entity.getDeviceId(),
-                entity.getTemperature(),
-                entity.getHumidity(),
-                entity.getLight(),
-                entity.getSoilHumidity(),
+                entity.getAirTemperatureCelsius(),
+                entity.getAirHumidityPercent(),
+                entity.getLuminosityLux(),
+                entity.getSoilMoisturePercent(),
                 entity.getCreatedAt()
         );
     }
@@ -30,10 +30,10 @@ public class SensorDataMapper {
     public static SensorDataEntity toEntity(SensorDataRecord domain) {
         return new SensorDataEntity(
                 domain.getDeviceId(),
-                domain.getTemperature(),
-                domain.getHumidity(),
-                domain.getLight(),
-                domain.getSoilHumidity(),
+                domain.getAirTemperatureCelsius(),
+                domain.getAirHumidityPercent(),
+                domain.getLuminosityLux(),
+                domain.getSoilMoisturePercent(),
                 domain.getCreatedAt()
         );
     }
