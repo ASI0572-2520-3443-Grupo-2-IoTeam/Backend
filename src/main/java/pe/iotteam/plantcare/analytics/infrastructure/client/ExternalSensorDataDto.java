@@ -9,8 +9,9 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * DTO for sensor data from external Edge Service API
- * Matches the JSON structure returned by the Flasgger API
+ * DTO for sensor data from external Edge Service API / Wokwi
+ * Matches the JSON structure returned by the API
+ * Uses same naming convention as Plants BC
  */
 @Data
 @NoArgsConstructor
@@ -23,16 +24,16 @@ public class ExternalSensorDataDto {
     
     @JsonProperty("device_id")
     private String deviceId;
-    
-    @JsonProperty("humidity")
-    private Integer humidity;
-    
-    @JsonProperty("light")
-    private Integer light;
-    
-    @JsonProperty("soil_humidity")
-    private Integer soilHumidity;
-    
-    @JsonProperty("temperature")
-    private Integer temperature;
+
+    @JsonProperty("air_temperature_celsius")
+    private Double airTemperatureCelsius;
+
+    @JsonProperty("air_humidity_percent")
+    private Double airHumidityPercent;
+
+    @JsonProperty("luminosity_lux")
+    private Integer luminosityLux;
+
+    @JsonProperty("soil_moisture_percent")
+    private Integer soilMoisturePercent;
 }
