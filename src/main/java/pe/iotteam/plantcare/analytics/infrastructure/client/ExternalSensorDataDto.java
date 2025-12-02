@@ -18,22 +18,21 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ExternalSensorDataDto {
     
-    @JsonProperty("created_at")
-    @JsonDeserialize(using = Rfc1123DateTimeDeserializer.class)
-    private LocalDateTime createdAt;
+    @JsonProperty("timestamp")
+    private LocalDateTime timestamp;
     
-    @JsonProperty("device_id")
+    @JsonProperty("deviceId")
     private String deviceId;
 
-    @JsonProperty("air_temperature_celsius")
-    private Double airTemperatureCelsius;
+    @JsonProperty("airTemperatureC")
+    private Double airTemperatureC;
 
-    @JsonProperty("air_humidity_percent")
-    private Double airHumidityPercent;
+    @JsonProperty("airHumidityPct")
+    private Double airHumidityPct;
 
-    @JsonProperty("luminosity_lux")
-    private Integer luminosityLux;
+    @JsonProperty("lightIntensityLux")
+    private Integer lightIntensityLux;
 
-    @JsonProperty("soil_moisture_percent")
-    private Integer soilMoisturePercent;
+    @JsonProperty("soilMoisturePct")
+    private Integer soilMoisturePct;
 }

@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,13 +18,11 @@ import pe.iotteam.plantcare.analytics.domain.exceptions.DataIngestionException;
 import pe.iotteam.plantcare.analytics.domain.model.aggregates.SensorDataRecord;
 import pe.iotteam.plantcare.analytics.domain.model.commands.IngestSensorDataCommand;
 import pe.iotteam.plantcare.analytics.domain.model.queries.GetAllSensorDataQuery;
-import pe.iotteam.plantcare.analytics.domain.model.queries.GetSensorDataByDateRangeQuery;
 import pe.iotteam.plantcare.analytics.domain.model.queries.GetSensorDataByDeviceIdQuery;
 import pe.iotteam.plantcare.analytics.interfaces.rest.resources.IngestionResultResource;
 import pe.iotteam.plantcare.analytics.interfaces.rest.resources.SensorDataResource;
 import pe.iotteam.plantcare.analytics.interfaces.rest.transform.SensorDataResourceAssembler;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -120,41 +117,5 @@ public class AnalyticsController {
         List<SensorDataResource> resources = SensorDataResourceAssembler.toResourceList(records);
         
         return ResponseEntity.ok(resources);
-    }
-
-    /**
-     * Get sensor data by date range
-     * GET /api/v1/analytics/sensor-data/range
-     */
-    @GetMapping("/sensor-data/range")
-    @Operation(
-            summary = "Get sensor data by date range",
-            description = "Retrieve sensor data records within a specified date range."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Successfully retrieved sensor data"),
-            @ApiResponse(responseCode = "400", description = "Invalid date range parameters")
-    })
-    public ResponseEntity<List<SensorDataResource>> getSensorDataByDateRange(
-            @Parameter(description = "Start date (ISO format)", example = "2025-11-01T00:00:00")
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
-            
-            @Parameter(description = "End date (ISO format)", example = "2025-11-13T23:59:59")
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
-        
-        log.debug("Retrieving sensor data between {} and {}", startDate, endDate);
-        
-        try {
-            List<SensorDataRecord> records = queryService.handle(
-                    new GetSensorDataByDateRangeQuery(startDate, endDate)
-            );
-            
-            List<SensorDataResource> resources = SensorDataResourceAssembler.toResourceList(records);
-            return ResponseEntity.ok(resources);
-            
-        } catch (IllegalArgumentException e) {
-            log.error("Invalid date range: {}", e.getMessage());
-            return ResponseEntity.badRequest().build();
-        }
     }
 }

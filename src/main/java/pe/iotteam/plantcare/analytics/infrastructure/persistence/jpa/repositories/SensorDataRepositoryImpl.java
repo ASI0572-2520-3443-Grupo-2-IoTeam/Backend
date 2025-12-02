@@ -41,7 +41,7 @@ public class SensorDataRepositoryImpl implements SensorDataRepository {
 
     @Override
     public List<SensorDataRecord> findAll() {
-        return jpaRepository.findAllByOrderByCreatedAtDesc().stream()
+        return jpaRepository.findAllByOrderByTimestampDesc().stream()
                 .map(SensorDataMapper::toDomain)
                 .collect(Collectors.toList());
     }
@@ -54,20 +54,13 @@ public class SensorDataRepositoryImpl implements SensorDataRepository {
     }
 
     @Override
-    public List<SensorDataRecord> findByDateRange(LocalDateTime startDate, LocalDateTime endDate) {
-        return jpaRepository.findByDateRange(startDate, endDate).stream()
-                .map(SensorDataMapper::toDomain)
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public Optional<SensorDataRecord> findLatestRecord() {
         return jpaRepository.findLatestRecord()
                 .map(SensorDataMapper::toDomain);
     }
 
     @Override
-    public boolean existsByDeviceIdAndCreatedAt(String deviceId, LocalDateTime createdAt) {
-        return jpaRepository.existsByDeviceIdAndCreatedAt(deviceId, createdAt);
+    public boolean existsByDeviceIdAndTimestamp(String deviceId, LocalDateTime timestamp) {
+        return jpaRepository.existsByDeviceIdAndTimestamp(deviceId, timestamp);
     }
 }

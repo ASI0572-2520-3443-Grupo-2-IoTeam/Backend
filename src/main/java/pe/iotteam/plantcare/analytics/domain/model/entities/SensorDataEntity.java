@@ -25,32 +25,32 @@ public class SensorDataEntity {
     @Column(name = "device_id", nullable = false)
     private String deviceId;
 
-    @Column(name = "air_temperature_celsius")
-    private Double airTemperatureCelsius;
+    @Column(name = "air_temperature_c")
+    private Double airTemperatureC;
 
-    @Column(name = "air_humidity_percent")
-    private Double airHumidityPercent;
+    @Column(name = "air_humidity_pct")
+    private Double airHumidityPct;
 
-    @Column(name = "luminosity_lux")
-    private Integer luminosityLux;
+    @Column(name = "light_intensity_lux")
+    private Integer lightIntensityLux;
 
-    @Column(name = "soil_moisture_percent")
-    private Integer soilMoisturePercent;
+    @Column(name = "soil_moisture_pct")
+    private Integer soilMoisturePct;
 
     @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
+    private LocalDateTime timestamp;
 
     @Column(name = "ingested_at", nullable = false)
     private LocalDateTime ingestedAt;
 
-    public SensorDataEntity(String deviceId, Double airTemperatureCelsius, Double airHumidityPercent, 
-                           Integer luminosityLux, Integer soilMoisturePercent, LocalDateTime createdAt) {
+    public SensorDataEntity(String deviceId, Double airTemperatureC, Double airHumidityPct, 
+                           Integer lightIntensityLux, Integer soilMoisturePct, LocalDateTime timestamp) {
         this.deviceId = deviceId;
-        this.airTemperatureCelsius = airTemperatureCelsius;
-        this.airHumidityPercent = airHumidityPercent;
-        this.luminosityLux = luminosityLux;
-        this.soilMoisturePercent = soilMoisturePercent;
-        this.createdAt = createdAt;
+        this.airTemperatureC = airTemperatureC;
+        this.airHumidityPct = airHumidityPct;
+        this.lightIntensityLux = lightIntensityLux;
+        this.soilMoisturePct = soilMoisturePct;
+        this.timestamp = timestamp;
         this.ingestedAt = LocalDateTime.now();
     }
 }
