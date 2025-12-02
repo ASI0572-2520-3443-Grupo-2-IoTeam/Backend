@@ -22,27 +22,20 @@ public interface SensorDataJpaRepository extends JpaRepository<SensorDataEntity,
     List<SensorDataEntity> findByDeviceId(String deviceId);
     
     /**
-     * Find sensor data within a date range
-     */
-    @Query("SELECT s FROM SensorDataEntity s WHERE s.createdAt BETWEEN :startDate AND :endDate ORDER BY s.createdAt DESC")
-    List<SensorDataEntity> findByDateRange(@Param("startDate") LocalDateTime startDate, 
-                                           @Param("endDate") LocalDateTime endDate);
-    
-    /**
      * Find the latest record by timestamp
      * Used to implement incremental ingestion
      */
-    @Query("SELECT s FROM SensorDataEntity s ORDER BY s.createdAt DESC LIMIT 1")
+    @Query("SELECT s FROM SensorDataEntity s ORDER BY s.timestamp DESC LIMIT 1")
     Optional<SensorDataEntity> findLatestRecord();
     
     /**
      * Check if a record exists by device ID and timestamp
      * Used to prevent duplicates
      */
-    boolean existsByDeviceIdAndCreatedAt(String deviceId, LocalDateTime createdAt);
+    boolean existsByDeviceIdAndTimestamp(String deviceId, LocalDateTime timestamp);
     
     /**
-     * Find all records ordered by creation date (most recent first)
+     * Find all records ordered by timestamp (most recent first)
      */
-    List<SensorDataEntity> findAllByOrderByCreatedAtDesc();
+    List<SensorDataEntity> findAllByOrderByTimestampDesc();
 }
