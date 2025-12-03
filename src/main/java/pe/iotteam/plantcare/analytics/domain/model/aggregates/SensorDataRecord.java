@@ -13,34 +13,34 @@ import java.time.LocalDateTime;
 public class SensorDataRecord {
     private SensorDataId id;
     private String deviceId;
-    private Integer temperature;
-    private Integer humidity;
-    private Integer light;
-    private Integer soilHumidity;
-    private LocalDateTime createdAt;
+    private Double airTemperatureC;
+    private Double airHumidityPct;
+    private Integer lightIntensityLux;
+    private Integer soilMoisturePct;
+    private LocalDateTime timestamp;
 
     // Constructor for new records from API
-    public SensorDataRecord(String deviceId, Integer temperature, Integer humidity, 
-                           Integer light, Integer soilHumidity, LocalDateTime createdAt) {
+    public SensorDataRecord(String deviceId, Double airTemperatureC, Double airHumidityPct, 
+                           Integer lightIntensityLux, Integer soilMoisturePct, LocalDateTime timestamp) {
         this.deviceId = deviceId;
-        this.temperature = temperature;
-        this.humidity = humidity;
-        this.light = light;
-        this.soilHumidity = soilHumidity;
-        this.createdAt = createdAt;
+        this.airTemperatureC = airTemperatureC;
+        this.airHumidityPct = airHumidityPct;
+        this.lightIntensityLux = lightIntensityLux;
+        this.soilMoisturePct = soilMoisturePct;
+        this.timestamp = timestamp;
     }
 
     // Constructor for persisted records
-    public SensorDataRecord(SensorDataId id, String deviceId, Integer temperature, 
-                           Integer humidity, Integer light, Integer soilHumidity, 
-                           LocalDateTime createdAt) {
+    public SensorDataRecord(SensorDataId id, String deviceId, Double airTemperatureC, 
+                           Double airHumidityPct, Integer lightIntensityLux, Integer soilMoisturePct, 
+                           LocalDateTime timestamp) {
         this.id = id;
         this.deviceId = deviceId;
-        this.temperature = temperature;
-        this.humidity = humidity;
-        this.light = light;
-        this.soilHumidity = soilHumidity;
-        this.createdAt = createdAt;
+        this.airTemperatureC = airTemperatureC;
+        this.airHumidityPct = airHumidityPct;
+        this.lightIntensityLux = lightIntensityLux;
+        this.soilMoisturePct = soilMoisturePct;
+        this.timestamp = timestamp;
     }
 
     /**
@@ -48,6 +48,6 @@ public class SensorDataRecord {
      * This is used to detect duplicates during ingestion
      */
     public String getUniqueIdentifier() {
-        return deviceId + "_" + createdAt.toString();
+        return deviceId + "_" + timestamp.toString();
     }
 }

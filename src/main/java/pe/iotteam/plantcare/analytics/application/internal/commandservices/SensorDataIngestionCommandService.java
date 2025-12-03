@@ -57,7 +57,7 @@ public class SensorDataIngestionCommandService {
             
             // 2. Get the latest record timestamp from our database
             LocalDateTime latestTimestamp = repository.findLatestRecord()
-                    .map(SensorDataRecord::getCreatedAt)
+                    .map(SensorDataRecord::getTimestamp)
                     .orElse(null);
             
             if (latestTimestamp != null) {
@@ -72,15 +72,15 @@ public class SensorDataIngestionCommandService {
             
             for (ExternalSensorDataDto dto : externalData) {
                 // Skip records that are older than or equal to our latest record
-                if (latestTimestamp != null && !dto.getCreatedAt().isAfter(latestTimestamp)) {
+                if (latestTimestamp != null && !dto.getTimestamp().isAfter(latestTimestamp)) {
                     duplicatesSkipped++;
                     continue;
                 }
                 
                 // Double-check: verify record doesn't exist in database
-                if (repository.existsByDeviceIdAndCreatedAt(dto.getDeviceId(), dto.getCreatedAt())) {
-                    log.debug("Skipping duplicate record: device_id={}, created_at={}", 
-                             dto.getDeviceId(), dto.getCreatedAt());
+                if (repository.existsByDeviceIdAndTimestamp(dto.getDeviceId(), dto.getTimestamp())) {
+                    log.debug("Skipping duplicate record: device_id={}, timestamp={}", 
+                             dto.getDeviceId(), dto.getTimestamp());
                     duplicatesSkipped++;
                     continue;
                 }
@@ -88,11 +88,11 @@ public class SensorDataIngestionCommandService {
                 // Convert DTO to domain model
                 SensorDataRecord record = new SensorDataRecord(
                         dto.getDeviceId(),
-                        dto.getTemperature(),
-                        dto.getHumidity(),
-                        dto.getLight(),
-                        dto.getSoilHumidity(),
-                        dto.getCreatedAt()
+                        dto.getAirTemperatureC(),
+                        dto.getAirHumidityPct(),
+                        dto.getLightIntensityLux(),
+                        dto.getSoilMoisturePct(),
+                        dto.getTimestamp()
                 );
                 
                 newRecords.add(record);

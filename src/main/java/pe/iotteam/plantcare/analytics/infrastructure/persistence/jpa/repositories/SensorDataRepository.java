@@ -40,5 +40,5 @@ public interface SensorDataRepository {
     /**
      * Check if a record exists by device ID and timestamp
      */
-    boolean existsByDeviceIdAndCreatedAt(String deviceId, LocalDateTime createdAt);
+    boolean existsByDeviceIdAndTimestamp(String deviceId, LocalDateTime timestamp);
 }

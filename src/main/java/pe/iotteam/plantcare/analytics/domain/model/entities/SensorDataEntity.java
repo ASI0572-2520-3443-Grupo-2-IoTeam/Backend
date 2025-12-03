@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(name = "sensor_data_analytics", 
-       uniqueConstraints = @UniqueConstraint(columnNames = {"device_id", "created_at"}))
+       uniqueConstraints = @UniqueConstraint(columnNames = {"device_id", "timestamp"}))
 @Getter
 @Setter
 @NoArgsConstructor
@@ -25,32 +25,32 @@ public class SensorDataEntity {
     @Column(name = "device_id", nullable = false)
     private String deviceId;
 
-    @Column(name = "temperature")
-    private Integer temperature;
+    @Column(name = "air_temperature_c")
+    private Double airTemperatureC;
 
-    @Column(name = "humidity")
-    private Integer humidity;
+    @Column(name = "air_humidity_pct")
+    private Double airHumidityPct;
 
-    @Column(name = "light")
-    private Integer light;
+    @Column(name = "light_intensity_lux")
+    private Integer lightIntensityLux;
 
-    @Column(name = "soil_humidity")
-    private Integer soilHumidity;
+    @Column(name = "soil_moisture_pct")
+    private Integer soilMoisturePct;
 
-    @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
+    @Column(name = "timestamp", nullable = false)
+    private LocalDateTime timestamp;
 
     @Column(name = "ingested_at", nullable = false)
     private LocalDateTime ingestedAt;
 
-    public SensorDataEntity(String deviceId, Integer temperature, Integer humidity, 
-                           Integer light, Integer soilHumidity, LocalDateTime createdAt) {
+    public SensorDataEntity(String deviceId, Double airTemperatureC, Double airHumidityPct, 
+                           Integer lightIntensityLux, Integer soilMoisturePct, LocalDateTime timestamp) {
         this.deviceId = deviceId;
-        this.temperature = temperature;
-        this.humidity = humidity;
-        this.light = light;
-        this.soilHumidity = soilHumidity;
-        this.createdAt = createdAt;
+        this.airTemperatureC = airTemperatureC;
+        this.airHumidityPct = airHumidityPct;
+        this.lightIntensityLux = lightIntensityLux;
+        this.soilMoisturePct = soilMoisturePct;
+        this.timestamp = timestamp;
         this.ingestedAt = LocalDateTime.now();
     }
 }

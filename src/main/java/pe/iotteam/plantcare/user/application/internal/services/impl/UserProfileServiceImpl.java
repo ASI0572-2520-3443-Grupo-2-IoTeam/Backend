@@ -7,6 +7,8 @@ import pe.iotteam.plantcare.auth.domain.model.entities.UserEntity;
 import pe.iotteam.plantcare.auth.infrastructure.persistence.jpa.repositories.UserRepositoryJpa;
 import pe.iotteam.plantcare.plant.infrastructure.persistence.jpa.repositories.PlantJpaRepository;
 import pe.iotteam.plantcare.user.application.internal.services.UserProfileService;
+import pe.iotteam.plantcare.user.domain.exceptions.InvalidAvatarException;
+import pe.iotteam.plantcare.user.domain.exceptions.UserNotFoundException;
 import pe.iotteam.plantcare.user.domain.model.entities.AchievementEntity;
 import pe.iotteam.plantcare.user.domain.model.entities.UserProfileEntity;
 import pe.iotteam.plantcare.user.infrastructure.persistence.jpa.repositories.AchievementRepository;
@@ -15,6 +17,7 @@ import pe.iotteam.plantcare.user.infrastructure.storage.AvatarStorageService;
 import pe.iotteam.plantcare.user.interfaces.rest.resources.*;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -41,7 +44,7 @@ public class UserProfileServiceImpl implements UserProfileService {
 
     private UserEntity findUserByEmail(String email) {
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));
     }
 
     @Override
@@ -119,12 +122,18 @@ public class UserProfileServiceImpl implements UserProfileService {
 
     @Override
     public String uploadAvatarByEmail(String email, MultipartFile file) throws Exception {
-        if (file == null || file.isEmpty()) throw new IllegalArgumentException("Empty file");
-        String contentType = file.getContentType();
-        if (contentType == null || !(contentType.contains("jpeg") || contentType.contains("png") || contentType.contains("jpg"))) {
-            throw new IllegalArgumentException("Invalid file type");
+        if (file == null || file.isEmpty()) {
+            throw new InvalidAvatarException("Avatar file cannot be empty");
         }
-        if (file.getSize() > 2 * 1024 * 1024) throw new IllegalArgumentException("File too large");
+
+        String contentType = file.getContentType();
+        if (contentType == null || !Arrays.asList("image/jpeg", "image/png", "image/jpg").contains(contentType)) {
+            throw new InvalidAvatarException("Only JPEG or PNG images are allowed. Received: " + contentType);
+        }
+
+        if (file.getSize() > 2 * 1024 * 1024) {
+            throw new InvalidAvatarException("File size exceeds 2MB limit. Size: " + (file.getSize() / 1024) + "KB");
+        }
 
         UserEntity user = findUserByEmail(email);
         String url = avatarStorageService.store(user.getId().toString(), file);
@@ -143,7 +152,7 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Override
     public AchievementsResponse getAchievementsByEmail(String email) {
         UserEntity user = findUserByEmail(email);
-        List<AchievementEntity> list = achievementRepository.findByUserId(user.getId().toString());
+        List<AchievementEntity> list = achievementRepository.findByUserIdUUID(user.getId());
         var resources = list.stream().map(a -> new AchievementResource(
                 a.getId(), a.getTitle(), a.getDescription(), a.getIcon(), a.getEarnedDate(), a.getStatus() == null ? "locked" : a.getStatus().name().toLowerCase()
         )).collect(Collectors.toList());
