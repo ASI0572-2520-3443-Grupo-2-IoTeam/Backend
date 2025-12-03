@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  */
 @Entity
 @Table(name = "sensor_data_analytics", 
-       uniqueConstraints = @UniqueConstraint(columnNames = {"device_id", "created_at"}))
+       uniqueConstraints = @UniqueConstraint(columnNames = {"device_id", "timestamp"}))
 @Getter
 @Setter
 @NoArgsConstructor
@@ -37,7 +37,7 @@ public class SensorDataEntity {
     @Column(name = "soil_moisture_pct")
     private Integer soilMoisturePct;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "timestamp", nullable = false)
     private LocalDateTime timestamp;
 
     @Column(name = "ingested_at", nullable = false)

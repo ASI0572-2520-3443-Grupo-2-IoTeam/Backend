@@ -21,7 +21,7 @@ public class DataIngestionScheduler {
         this.ingestionService = ingestionService;
     }
 
-    @Scheduled(cron = "0 */5 * * * *")
+    // @Scheduled(cron = "0 */5 * * * *") // Deshabilitado - usar endpoint manual
     public void scheduledDataIngestion() {
         log.info("Starting scheduled data ingestion");
         try {
@@ -29,6 +29,20 @@ public class DataIngestionScheduler {
             log.info("Ingestion completed: {} new records", count);
         } catch (Exception e) {
             log.error("Ingestion failed: {}", e.getMessage(), e);
+        }
+    }
+    
+    /**
+     * Run ingestion once on application startup
+     */
+    @Scheduled(initialDelay = 15000, fixedDelay = Long.MAX_VALUE)
+    public void initialDataIngestion() {
+        log.info("Running initial data ingestion on startup");
+        try {
+            int count = ingestionService.handle(new IngestSensorDataCommand());
+            log.info("Initial ingestion completed: {} records ingested", count);
+        } catch (Exception e) {
+            log.error("Initial data ingestion failed: {}", e.getMessage(), e);
         }
     }
 }
